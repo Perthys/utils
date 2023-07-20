@@ -14,9 +14,8 @@ function HashMap.new(HashmapData)
     return self;
 end
 
-
 function HashMap:Insert(Data)
-    local Scale = self.Scale; -- 3
+    local Scale = self.Scale; 
     local Hashed = Data.Hashed;
     local Position = Data.Position;
     
@@ -44,8 +43,6 @@ function HashMap:GetNeighbors(Data)
     local X, Y, Z = RoundToNearestNumber(X, Scale), RoundToNearestNumber(Y, Scale), RoundToNearestNumber(Z, Scale);
 
     for XIndex = X - Range * Scale, X + Range * Scale, Scale do
-
-        print(XIndex)
         local XTable = self.Nodes[XIndex]; if not XTable then continue end;
         
         for YIndex = Y - Range * Scale, Y + Range * Scale, Scale do
@@ -63,6 +60,33 @@ function HashMap:GetNeighbors(Data)
     end
     return Neighbors;
 end
+
+--[[
+local XYZNeighborMap = HashMap.new({
+    Scale = 3;
+})
+
+for X_Index = 1, 10 do 
+    for Y_Index = 1, 10 do 
+        local Part = Instance.new("Part")
+        Part.Anchored = true
+        Part.Position = Vector3.new(X_Index * 4, 10, Y_Index * 4)
+        XYZNeighborMap:Insert({
+            Position = Part.Position,
+            Hashed = Part,
+        })
+        Part.Parent = workspace
+    end
+end
+
+local Neighbors = XYZNeighborMap:GetNeighbors({
+    Position = Vector3.new(1, 2, 4),
+    Range = 7
+})
+
+for Index, Neighbor in Neighbors do 
+    Neighbor.Material = Enum.Material.Neon
+end]]
 
 
 
